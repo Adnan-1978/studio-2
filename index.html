@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>استوديو عدنان</title>
+<style>
+html,body{margin:0;height:100%;background:#111;color:#fff;font-family:sans-serif}
+#bar{display:flex;gap:6px;overflow-x:auto;padding:8px;background:#1d1d1d}
+#bar button{flex:none;padding:8px 14px;border:0;border-radius:18px;background:#333;color:#fff}
+#bar button.on{background:#7c5cff}
+iframe{width:100%;height:calc(100% - 54px);border:0}
+</style></head><body>
+<div id="bar"></div>
+<iframe id="f" allow="camera;microphone;clipboard-write"></iframe>
+<script>
+const def=[
+ {n:"فيديو من صورة (LTX)",u:"https://rdata92-ltx-2-3-10eros.hf.space"},
+ {n:"تبديل وجوه",u:"https://adnanelsayed21-faceswap-all-adnan.hf.space"}];
+const get=()=>{try{return JSON.parse(localStorage.getItem("extra")||"[]")}catch(e){return[]}};
+const host=u=>{const m=u.match(/huggingface\.co\/spaces\/([^\/]+)\/([^\/?#]+)/);
+ return m?`https://${(m[1]+"-"+m[2]).toLowerCase().replace(/[._]/g,"-")}.hf.space`:u};
+let t=def.concat(get());
+function draw(){
+ bar.innerHTML="";
+ t.forEach(x=>{const b=document.createElement("button");b.textContent=x.n;
+  b.onclick=()=>{f.src=x.u;[...bar.children].forEach(c=>c.classList.remove("on"));b.classList.add("on")};
+  bar.append(b)});
+ const a=document.createElement("button");a.textContent="+";
+ a.onclick=()=>{const n=prompt("اسم الأداة"),u=prompt("رابط الـ Space");
+  if(n&&u){const e=get();e.push({n,u:host(u)});
+   try{localStorage.setItem("extra",JSON.stringify(e))}catch(x){}
+   t=def.concat(e);draw()}};
+ bar.append(a);bar.children[0].click();
+}
+draw();
+</script></body></html>
